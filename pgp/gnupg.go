@@ -59,7 +59,9 @@ func (g *GpgSigner) gpgArgs() []string {
 	}
 
 	if g.keyRef != "" {
-		args = append(args, "-u", g.keyRef)
+		for _, keyRef := range strings.Split(g.keyRef, ",") {
+			args = append(args, "-u", keyRef)
+		}
 	}
 
 	if g.passphrase != "" || g.passphraseFile != "" {

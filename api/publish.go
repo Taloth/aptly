@@ -27,7 +27,11 @@ func getSigner(options *SigningOptions) (pgp.Signer, error) {
 	}
 
 	signer := context.GetSigner()
-	signer.SetKey(options.GpgKey)
+	if options.GpgKey != "" {
+		signer.SetKey(options.GpgKey)
+	} else {
+		signer.SetKey(context.Config().GpgKeyRef)
+	}
 	signer.SetKeyRing(options.Keyring, options.SecretKeyring)
 	signer.SetPassphrase(options.Passphrase, options.PassphraseFile)
 	signer.SetBatch(options.Batch)
